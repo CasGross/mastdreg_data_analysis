@@ -102,8 +102,8 @@ if __name__ == "__main__":
     #print(colors)
 
     # Diagramm formatieren
-    ax.set_ylabel("Anzahl von monatlich in Betrieb genommener Stromspeichern in versch. Leistungsklassen für P>=10kW")
-    ax.set_title("Monatlicher Zubau von Stromspeichern in verschiedenen Leistungsklassen")
+    ax.set_ylabel("Anzahl von monatlich in Betrieb genommener Stromspeichern [n/Monat] ")
+    ax.set_title("Monatlicher Zubau von Stromspeichern mit verschiedenen Kapazitäten und P>=10kW")
     ax.legend(list_of_labels)
     # plt.savefig("Balkendiagramm_Speicher_Zubau_pro_Monat_2023_bis_2025.png", dpi=3000, bbox_inches="tight")
     #plt.show()
