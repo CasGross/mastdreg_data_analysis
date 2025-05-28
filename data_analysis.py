@@ -55,6 +55,10 @@ if __name__ == "__main__":
     list_of_labels= ['0-5 kWh',"5-10 kWh",'10-15 kWh','15-20 kWh','20-25 kWh','25+ kWh']
 
     con = postgres_session()
+    nat_pers_vs_gesamt_verteilung_nach_kap = query_database(con, schema,'nat_pers_vs_gesamt_verteilung_nach_kapazitaet_tbl')
+
+
+    con = postgres_session()
     table_bis_23 = 'leistung_vs_kapazitaet_bis_2023_tbl'
     df_l_vs_c_bis_23 = query_database(con, schema, table_bis_23)
     df_l_vs_c_bis_23_compact = compact_df(df_l_vs_c_bis_23)
@@ -84,10 +88,30 @@ if __name__ == "__main__":
 
     print(df_l_vs_c_25_compact)
     print(df_l_vs_c_25_compact_pm)
+    print(nat_pers_vs_gesamt_verteilung_nach_kap)
 
 # ---------------------------------------------------------------------
 
+    # Balkendiagramm erstellen
+    fig, ax = plt.subplots(figsize=(8, 6))
 
+    kategorien = list(nat_pers_vs_gesamt_verteilung_nach_kap.columns[:-1])
+    werte_1 = nat_pers_vs_gesamt_verteilung_nach_kap.iloc[0,:-1]
+    werte_2 = nat_pers_vs_gesamt_verteilung_nach_kap.iloc[1,:-1]
+
+    plt.bar(kategorien, werte_2, color="blue", label="Batteriespeicher insgesamt")
+    plt.bar(kategorien, werte_1, color="skyblue", label = "betrieben durch Privatpersonen")
+
+    # Diagramm-Details
+    plt.xlabel("kapazität der Einheiten in kWh")
+    plt.ylabel("Anzahl der Einheiten im deutschen Netz")
+    plt.title("Vergleich der Einheiten zwischen nat_Pers und gesamt")
+    plt.legend()
+    #plt.xticks(rotation=45)  # Verbessert die Lesbarkeit der X-Achse
+    plt.savefig("nat_pers_vs_gesamt_verteilung_nach_kap.png", dpi=1000, bbox_inches="tight")
+
+# ---------------------------------------------------------------------
+    """
     # Balkendiagramm erstellen
     fig, ax = plt.subplots(figsize=(8, 6))
 
@@ -159,12 +183,13 @@ if __name__ == "__main__":
     plt.savefig("Heatmap_Speicherkapazität_vs_Bruttoleistung_2023.png", dpi=1000, bbox_inches="tight")
     plt.show()
 
+    """
+
 
 
     ''' 
     To Do:
-    prozentueller Anteil der verschiedenen Leistungsklassen
-    natürliche Person filtern (--> alles was "natürliche Person" in Spalte name_anlagenbetreiber hat
+    
     Kreisdiagramm und Balkendiagramm: was gibt es gerade für Batterien im Netz (Gegenüberstellung insgesamt)
     
     '''

@@ -41,6 +41,7 @@ SELECT
     COUNT(*) FILTER (WHERE nutzbare_speicherkapazitaet_kwh >25) 											AS kap_25_plus
 FROM einheiten_stromspeicher_ungefiltert_1;
 
+
 CREATE MATERIALIZED VIEW IF NOT EXISTS nat_pers_vs_gesamt_verteilung_nach_Kapazitaet_4 AS
 SELECT *, 'nat_Pers' AS Art_der_Einheit
 FROM nat_pers_verteilung_nach_Kapazitaet
@@ -48,5 +49,10 @@ UNION ALL
 SELECT *, 'gesamt' AS Art_der_Einheit
 FROM gesamt_verteilung_nach_Kapazitaet;
 
+CREATE TABLE nat_pers_vs_gesamt_verteilung_nach_Kapazitaet_tbl AS
 SELECT * FROM nat_pers_vs_gesamt_verteilung_nach_Kapazitaet_4;
 
+--speichern als csv
+COPY (SELECT * FROM nat_pers_vs_gesamt_verteilung_nach_Kapazitaet_tbl) TO 'C:/data/marktstammdatenregister/nat_pers_vs_gesamt_verteilung_nach_Kapazitaet_tbl.csv' WITH CSV HEADER;
+
+SELECT * FROM nat_pers_vs_gesamt_verteilung_nach_Kapazitaet_tbl;
